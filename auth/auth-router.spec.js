@@ -23,8 +23,32 @@ describe('Add a new user on register route', () => {
 
         expect(response.status).toBe(201)
     }), 
-
     beforeEach(async() => {
         await db.getUsers().truncate()
+    })
+})
+
+describe('test the login route', () => {
+    it('gets the users in the database', async () => {
+        const username = "Rudolph the red nose reindeer";
+
+        const expectedBody = {
+            
+            id: 1,
+                username: 'Rudolph the red nose reindeer',
+                    password: '$2b$10$y7hFIa8Z.5Il/NOqvXz/VOcnyeS24bKgDaOWPkrzrye3zXpakRYGS'
+        
+        }
+
+
+        const user = await db.findUserByName(username);
+        console.log(user)
+
+        expect(user).toContainEqual(expectedBody)
+    })
+    it('returns a 200 status code', async () => {
+        const res = await supertest(server).post('/api/auth/login');
+
+        expect(res.status).toBe(200)
     })
 })
