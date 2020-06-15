@@ -73,19 +73,15 @@ describe('test api route for jokes', () => {
             .get('/api/jokes')
             .set('Authorization', "jkkl")
 
-        //send a token
-        //if I delete the middleware I get 200, so it is blocking my request with the middleware, so I want to somehow have the test send something to validate that I can enter
-
             expect(response.status).toBe(401)
         })
     it('Bring back status code 200 if logged in', async () => {
 
         const response = await supertest(server)
+            
+            //need to get the new tokem from postman afer 1 hr
             .get('/api/jokes')
                 .set('Authorization', "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0Ijo0LCJ1c2VybmFtZSI6ImciLCJpYXQiOjE1OTIyNDM0OTcsImV4cCI6MTU5MjI0NzA5N30.S9kHXKYAz6Cx3VzDHO3l3L3jeG_l0-kfXE8Xv9SyBac")
-
-        //send a token
-        //if I delete the middleware I get 200, so it is blocking my request with the middleware, so I want to somehow have the test send something to validate that I can enter
 
             expect(response.status).toBe(200)
         })

@@ -8,7 +8,6 @@ const secrets = require('./config');
 module.exports = (req, res, next) => {
   try {
     const { authorization } = req.headers
-    console.log(req.headers)
     //receive token from browswer
     if (authorization) {
       jwt.verify(authorization, secrets.jwtSecret, (err, decodedToken) => {
