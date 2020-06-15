@@ -3,17 +3,17 @@ const db = require('./dbConfig');
 module.exports = {
     addUser,
     getUsers,
-    findUserByName
+    findUser
 }
 
 function getUsers() {
     return db('users')
 }
 
-function addUser(user) {
-    return db('users').insert(user)
+function addUser(text, user) {
+    return db(text, 'users').insert(user)
 }
 
-function findUserByName(username) {
-    return db('users').where({username}).first() //originally forgot this
+function findUser(user) {
+    return db('users').where({ 'username': user }).first() //originally forgot this
 }

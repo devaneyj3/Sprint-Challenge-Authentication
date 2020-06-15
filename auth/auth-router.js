@@ -8,7 +8,7 @@ const secrets = require('./config');
 router.post('/register', async (req, res) => {
   const hash = bcrypt.hashSync(req.body.password, 10);
   req.body.password = hash;
-  await db.addUser(req.body)
+  await db.addUser('users', req.body)
   try {
     res.status(201).send(req.body)
   } catch {
@@ -18,14 +18,15 @@ router.post('/register', async (req, res) => {
 
 router.post('/login', async(req, res) => {
   const { password, username } = req.body;
+  const user = await db.findUser(username)
   try {
-    const user = await db.findUserByName(username)
 
     if (user && bcrypt.compareSync(password, user.password)) {
 
       const token = generateToken(user)
+      res.cookie('token', token)
 
-      res.status(200).json({message: ` Welcome ${user.username}`, token})
+      res.status(200).json({message: ` Welcome ${user.username}`})
     } else {
       res.status(404).json({message: `${username}, could not be found`})
     }
