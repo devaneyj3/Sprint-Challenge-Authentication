@@ -7,20 +7,20 @@ const secrets = require('./config');
 
 module.exports = (req, res, next) => {
   try {
-    const token = req.cookies.token
+    const { authorization } = req.headers
+    console.log(req.headers)
     //receive token from browswer
-    if (token) {
-      jwt.verify(token, secrets.jwtSecret, (err, decodedToken) => {
+    if (authorization) {
+      jwt.verify(authorization, secrets.jwtSecret, (err, decodedToken) => {
         if (err) {
-           return res.status(401).json({message: 'You are not authorized to enter'})
+          return res.status(401).json({ message: 'You are not authorized to enter' })
         } else {
           req.decodedToken = decodedToken;
-          console.log(decodedToken) 
-            next()
+          next()
         }
       })
     }
-  } catch {
+  } catch  {
     return res.status(401).json({ you: 'shall not pass!' });
   }
 };
